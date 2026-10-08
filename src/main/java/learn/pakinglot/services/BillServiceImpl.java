@@ -12,6 +12,7 @@ import learn.pakinglot.models.Operator;
 import learn.pakinglot.models.ParkingLot;
 import learn.pakinglot.models.Payment;
 import learn.pakinglot.models.PaymentMode;
+import learn.pakinglot.models.SlotStatus;
 import learn.pakinglot.models.Ticket;
 import learn.pakinglot.models.Vehicle;
 import learn.pakinglot.repositories.InMemoryRepository;
@@ -75,6 +76,14 @@ public class BillServiceImpl implements BillService{
         Date exitTime = new Date();
         double fees = feesCalculationStrategy.calculateFees(ticket.getEntryTime(), exitTime, vechile.getVehicleType());
         
+        // free the slot
+        ticket.getParkingSlot().setSlotStatus(SlotStatus.UNOCCUPIED);
+        parkingLot.getAllowedVehicles().forEach(allowedVehicle -> {
+            if(allowedVehicle.getVehicleType() == vechile.getVehicleType()) {
+                allowedVehicle.setCapacity(allowedVehicle.getCapacity()+1);
+            }
+        });
+
         // create or validate Payment
         Payment payment = paymentService.getOrCreatePayment(paymentMode, transactionId);
         
