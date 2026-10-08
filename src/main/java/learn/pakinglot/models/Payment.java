@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter 
 @Setter 
-public class Payment {
+public class Payment extends BaseModel{
     PaymentMode paymentMode;
     PaymentStatus paymentStatus;
-    int TransactionId;
-    
+    Long TransactionId;
 }

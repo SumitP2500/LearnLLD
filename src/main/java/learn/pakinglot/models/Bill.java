@@ -8,13 +8,20 @@ import lombok.Setter;
 
 @Getter 
 @Setter 
-public class Bill {
-    int invoiceNumber;
+public class Bill extends BaseModel{
+    Long invoiceNumber;
     Ticket ticket;
+    Date entryTime;
     Date exitTime;
     Gate gate;
     Operator operator;
-    Integer amount;
+    Vehicle vehicle;
+    Double amount;
     List<Payment> payments;
     BillStatus billStatus;
+    public static Long invoiceCount = 0L;
+
+    public Bill() {
+        setInvoiceNumber(++invoiceNumber);
+    }
 }
