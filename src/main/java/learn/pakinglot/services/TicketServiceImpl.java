@@ -36,7 +36,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket issueTicket(Long OperatorId, VehicleType vehicleType, Long vehicleNumber, String ownerName, String ownerContact) {
+    public Ticket issueTicket(Long OperatorId, VehicleType vehicleType, Long registrationNumber, String ownerName, String ownerContact) {
         // get the Operator from the operatorId
         Operator operator = operatorRepository.findById(OperatorId);
 
@@ -56,7 +56,7 @@ public class TicketServiceImpl implements TicketService {
         }
 
         // get or create vehicle from repository by vehicle number
-        Vehicle vehicle = vehicleService.getOrCreateVehicle(vehicleNumber, vehicleType, ownerName, ownerContact);
+        Vehicle vehicle = vehicleService.getOrCreateVehicle(registrationNumber, vehicleType, ownerName, ownerContact);
         
         // check allowedVehicle has available slots
         List<AllowedVehicle> allowedVehicles = parkingLot.getAllowedVehicles();

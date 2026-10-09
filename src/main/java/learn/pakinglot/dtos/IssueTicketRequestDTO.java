@@ -9,7 +9,7 @@ import lombok.Setter;
 public class IssueTicketRequestDTO {
     // private Long ParkingLotId;
     private Long OperatorId;
-    private Long VehicleNumber;
+    private Long registrationNumber;
     private String ownerName;
     private String ownerContact;
     private VehicleType vehicleType;

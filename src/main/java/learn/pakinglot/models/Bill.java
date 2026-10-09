@@ -22,6 +22,6 @@ public class Bill extends BaseModel{
     public static Long invoiceCount = 0L;
 
     public Bill() {
-        setInvoiceNumber(++invoiceNumber);
+        setInvoiceNumber(++invoiceCount);
     }
 }

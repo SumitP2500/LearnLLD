@@ -3,6 +3,7 @@ package learn.pakinglot;
 import java.util.List;
 
 import learn.pakinglot.models.AllowedVehicle;
+import learn.pakinglot.models.FeesCalculationStrategyType;
 import learn.pakinglot.models.FloorStatus;
 import learn.pakinglot.models.Gate;
 import learn.pakinglot.models.GateStatus;
@@ -44,6 +45,7 @@ public class DataLoader {
         
         parkingLot.setParkingLotStatus(ParkingLotStatus.OPERATIONAL);
         parkingLot.setSlotAssignmentStrategyType(SlotAssignmentStrategyType.RANDOM);
+        parkingLot.setFeesCalculationStrategyType(FeesCalculationStrategyType.HOURLY);
 
         ParkingFloor firstFloor = new ParkingFloor();
         firstFloor.setNumber("1");

@@ -23,7 +23,7 @@ import learn.pakinglot.services.BillServiceImpl;
 import learn.pakinglot.services.TicketServiceImpl;
 
 public class Clients {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
         InMemoryRepository<ParkingLot> parkingLotRepository = new InMemoryRepository<>();
         InMemoryRepository<ParkingFloor> parkingFloorRepository = new InMemoryRepository<>();
@@ -41,7 +41,7 @@ public class Clients {
         IssueTicketRequestDTO request = new IssueTicketRequestDTO();
         request.setOperatorId(operatorRepository.findAll().stream()
                 .filter(op -> op.getGate().getGateType() == GateType.ENTRY).findFirst().get().getId());
-        request.setVehicleNumber(12345L);
+        request.setRegistrationNumber(12345L);
         request.setOwnerName("Sumit");
         request.setOwnerContact("9867892702");
         request.setVehicleType(VehicleType.TWO_WHEELER);
@@ -92,7 +92,8 @@ public class Clients {
         billRequest.setPaymentStatus(PaymentStatus.SUCCESS);
         billRequest.setTicketNumber(ticketResponse.getTicketNumber());
         billRequest.setTransactionId(12345L);
-        BillController billController = new BillController(new BillServiceImpl(operatorRepository, ticketRepository, paymenyRepository));
+        billRequest.setRegistrationNumber(12345L);
+        BillController billController = new BillController(new BillServiceImpl(paymenyRepository, ticketRepository, operatorRepository, parkingSlotRepository, vehicleRepository));
         BillGenerationResponseDTO billResponse = billController.generateBill(billRequest);
         System.out.println("Bill Response Message" + billResponse.getResponse().getMessage());
         System.out.println("Bill Invoice Numer :" + billResponse.getInvoiceNumber());

@@ -10,10 +10,12 @@ import learn.pakinglot.models.Gate;
 import learn.pakinglot.models.GateType;
 import learn.pakinglot.models.Operator;
 import learn.pakinglot.models.ParkingLot;
+import learn.pakinglot.models.ParkingSlot;
 import learn.pakinglot.models.Payment;
 import learn.pakinglot.models.PaymentMode;
 import learn.pakinglot.models.SlotStatus;
 import learn.pakinglot.models.Ticket;
+import learn.pakinglot.models.TicketStatus;
 import learn.pakinglot.models.Vehicle;
 import learn.pakinglot.repositories.InMemoryRepository;
 import learn.pakinglot.strategy.FeesCalculationStrategy;
@@ -26,11 +28,13 @@ public class BillServiceImpl implements BillService{
     VehicleService vehicleService;
     PaymentService paymentService;
 
-    public BillServiceImpl(InMemoryRepository<Operator> operatorRepository, InMemoryRepository<Ticket> ticketRepository,
-        InMemoryRepository<Payment> paymenyRepository ) {
+    public BillServiceImpl(InMemoryRepository<Payment> paymenyRepository, InMemoryRepository<Ticket> ticketRepository, InMemoryRepository<Operator> operatorRepository, 
+        InMemoryRepository<ParkingSlot> parkingSlotRepository, InMemoryRepository<Vehicle> vehicleRepository) {
             this.operatorRepository = operatorRepository;
             this.ticketRepository = ticketRepository;
             this.paymentService = new PaymentService(paymenyRepository);
+            this.ticketService = new TicketServiceImpl(ticketRepository, operatorRepository, parkingSlotRepository, vehicleRepository);
+            this.vehicleService = new VehicleService(vehicleRepository);            
     }
 
     @Override
@@ -84,6 +88,9 @@ public class BillServiceImpl implements BillService{
             }
         });
 
+        // close the current ticket
+        ticket.setStatus(TicketStatus.CLOSED);
+
         // create or validate Payment
         Payment payment = paymentService.getOrCreatePayment(paymentMode, transactionId);
         
@@ -98,11 +105,12 @@ public class BillServiceImpl implements BillService{
         bill.setAmount(fees);
         bill.setPayments(List.of(payment));
         bill.setBillStatus(BillStatus.PAID);
+        
         return bill;
     }
 
     private Ticket getTicketByTicketNumer(Long ticketNumber) {
-        return ticketRepository.findAll().stream().filter(t -> t.getTicketNumber() == ticketNumber).findFirst().orElse(null);
+        return ticketRepository.findAll().stream().filter(t -> t.getTicketNumber().equals(ticketNumber)).findFirst().orElse(null);
     }
 
 }

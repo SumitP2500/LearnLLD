@@ -28,6 +28,6 @@ public class VehicleService {
     }
 
     public Vehicle getVehicleByRegistrationNumber(Long registrationNumber) {
-        return vehicleRepository.findAll().stream().filter(v -> v.getRegistrationNumber()== registrationNumber).findFirst().orElse(null);
+        return vehicleRepository.findAll().stream().filter(v -> v.getRegistrationNumber().equals(registrationNumber)).findFirst().orElse(null);
     }
 }

@@ -19,7 +19,7 @@ public class TicketController {
     public IssueTicketResponseDTO issueTicket(IssueTicketRequestDTO request) {
         IssueTicketResponseDTO response = new IssueTicketResponseDTO();
         try {
-            Ticket ticket = ticketService.issueTicket(request.getOperatorId(), request.getVehicleType(), request.getVehicleNumber(), request.getOwnerName(), request.getOwnerContact());
+            Ticket ticket = ticketService.issueTicket(request.getOperatorId(), request.getVehicleType(), request.getRegistrationNumber(), request.getOwnerName(), request.getOwnerContact());
             response.setTicketNumber(ticket.getTicketNumber());
             response.setEntryTime(ticket.getEntryTime());
             response.setResponse(new ResponseDTO("Ticket has been created successfully", ResponseType.SUCCESS));

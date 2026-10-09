@@ -14,7 +14,7 @@ public class HourlyFeesCalculationStrategy implements FeesCalculationStrategy {
         // calculate hours required to calculate fees
         long mins = Duration.between(entryTime.toInstant(), exitTime.toInstant()).toMinutes();
         long hours = (mins + 59) / 60; // round up: any part of an hour is billed as a full hour
-        
+        hours = (hours == 0) ? 1 : hours;
         double rate = VehicleTypeFees.valueOf(vehicleType.name()).getFeesPerHour();
         return hours * rate;
 
